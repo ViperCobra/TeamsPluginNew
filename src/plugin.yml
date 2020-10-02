@@ -1,0 +1,10 @@
+name: PvPTeams
+version: 0.8
+author: ViperCobra
+main: life.steeze.teamsplugin.TeamsBase
+api-version: 1.14
+commands:
+  accept:
+    description: Accept invite
+  team:
+    description: Teams plugin
