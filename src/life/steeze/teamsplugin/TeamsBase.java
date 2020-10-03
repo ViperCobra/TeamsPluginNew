@@ -160,6 +160,7 @@ public class TeamsBase extends JavaPlugin implements Listener {
                                 FileManager.addValue(args[1], p.getUniqueId());
                                 Bukkit.broadcastMessage(ChatColor.RED + "Team " + ChatColor.YELLOW + args[1] + ChatColor.RED + " has been created!");
                             }
+
                         }
                     } else {
                         p.sendMessage(ChatColor.RED + "YOU'RE ON A TEAM ALREADY");
