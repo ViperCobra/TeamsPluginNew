@@ -7,9 +7,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -21,7 +24,7 @@ public class TeamsBase extends JavaPlugin implements Listener {
 
     HashMap<Player, String> invites = new HashMap<>();
 
-    private static TeamsBase inst;
+    public static TeamsBase inst;
 
 
 
@@ -39,7 +42,7 @@ public class TeamsBase extends JavaPlugin implements Listener {
             public void run() {
                 invites.remove(p);
             }
-        }.runTaskLaterAsynchronously(TeamsBase.inst, 20 * 30);
+        }.runTaskLaterAsynchronously(inst, 20 * 30);
 
     }
 
@@ -54,7 +57,12 @@ public class TeamsBase extends JavaPlugin implements Listener {
 
         FileManager.getTeamsData();
         console("TeamsPlugin loading...");
-        FileManager.get().options().copyDefaults(true);
+        FileManager.getTeams().options().copyDefaults(true);
+
+        FileManager.loadClaims();
+        console("Claims loading");
+        FileManager.getClaims().options().copyDefaults(true);
+
     }
 
     @Override
@@ -99,9 +107,9 @@ public class TeamsBase extends JavaPlugin implements Listener {
                 if (!args[0].equalsIgnoreCase("create")) {
                     if (args[0].equals("leave")) {
                         if (!FileManager.getTeamOf(p).equals("none")) {
-                            if (FileManager.get().getStringList(FileManager.getTeamOf(p)).size() == 1) {
+                            if (FileManager.getTeams().getStringList(FileManager.getTeamOf(p)).size() == 1) {
                                 p.sendMessage(ChatColor.RED + "You are the only person on your team. Disbanding...");
-                                FileManager.get().set(FileManager.getTeamOf(p), null);
+                                FileManager.getTeams().set(FileManager.getTeamOf(p), null);
                             }
                             FileManager.removeValue(FileManager.getTeamOf(p), p.getUniqueId());
                             p.sendMessage(ChatColor.RED + "Successfully left your team");
@@ -144,11 +152,11 @@ public class TeamsBase extends JavaPlugin implements Listener {
                         if (!an) {
                             p.sendMessage(ChatColor.RED + "INVALID TEAM NAME SORRY BUD");
                         } else {
-                            if (FileManager.get().contains(args[1])) {
+                            if (FileManager.getTeams().contains(args[1])) {
                                 p.sendMessage(ChatColor.RED + "TEAM ALREADY EXISTS BUD");
                             } else {
                                 p.sendMessage(ChatColor.RED + "Creating team " + ChatColor.YELLOW + args[1]);
-                                FileManager.get().createSection(args[1]);
+                                FileManager.getTeams().createSection(args[1]);
                                 FileManager.addValue(args[1], p.getUniqueId());
                                 Bukkit.broadcastMessage(ChatColor.RED + "Team " + ChatColor.YELLOW + args[1] + ChatColor.RED + " has been created!");
                             }
@@ -176,5 +184,20 @@ public class TeamsBase extends JavaPlugin implements Listener {
                 event.setFormat(ChatColor.GRAY + p.getDisplayName() + ": " + ChatColor.WHITE + event.getMessage());
             }
         }
+    }
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent e){
+        for(Claim c : FileManager.getClaimsList()){
+            //do stuff here
+        }
+
+    }
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent e){
+
+    }
+    @EventHandler
+    public void onBlockInteract(PlayerInteractEvent e){
+
     }
 }
