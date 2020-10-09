@@ -1,1 +1,7 @@
+# Chat format placeholders: {team} {name} {message}.
+# Please use the correct § symbol for color codes. (Alt+0167) or copy and paste.
 format-chat: true
+formatted-chat: §8[§c{team}§8]§f{name}§8 » §7{message}
+formatted-chat-no-team-found-for-player: §f{name}§8 » §7{message}
+minimumClaimWidth: 4
+maximumClaimCornerDistance: 40

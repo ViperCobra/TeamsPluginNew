@@ -8,3 +8,9 @@ commands:
     description: Accept invite
   team:
     description: Teams plugin
+  claim:
+    description: Make your team's claim
+  pos1:
+    description: Select position
+  pos2:
+    description: Select position
